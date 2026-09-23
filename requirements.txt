@@ -1,0 +1,36 @@
+# Core
+numpy<2
+pandas
+pyarrow
+tqdm
+scikit-learn
+
+# Data acquisition
+datasets
+huggingface_hub
+google-cloud-bigquery
+db-dtypes
+
+# BM25 / sparse retrieval
+rank-bm25
+
+# Semantic retrieval
+sentence-transformers
+faiss-cpu
+
+# Evaluation
+pytrec_eval
+scipy
+
+# Re-ranking / LTR
+lightgbm
+
+# API / UI
+fastapi
+uvicorn[standard]
+streamlit
+pydantic
+
+# Notebooks
+jupyter
+matplotlib
