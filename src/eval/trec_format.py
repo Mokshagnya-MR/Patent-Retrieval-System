@@ -2,6 +2,17 @@
 import os
 
 
+def exclude_self_match(results: list[tuple[str, float]], query_id: str, k: int) -> list[tuple[str, float]]:
+    """Drop the query's own document from its results (relevant for
+    patent-as-query evaluation, where the query text IS a corpus document's
+    title+abstract, so that document trivially self-matches at rank 1 with
+    a near-perfect score every time -- wasting a top-1 slot on a guaranteed
+    non-relevant hit and deflating every rank-sensitive metric uniformly
+    across methods). Callers should over-fetch (k+1) before calling this so
+    a full k results remain after filtering."""
+    return [(doc_id, score) for doc_id, score in results if doc_id != query_id][:k]
+
+
 def load_topics(path: str) -> dict[str, str]:
     topics = {}
     with open(path, encoding="utf-8") as f:

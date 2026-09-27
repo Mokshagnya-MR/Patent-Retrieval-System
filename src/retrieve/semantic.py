@@ -27,7 +27,7 @@ def search_semantic(query: str, k: int = 10, index_dir: str = "data/processed/ve
 
 
 def main():
-    from src.eval.trec_format import load_topics, write_run
+    from src.eval.trec_format import exclude_self_match, load_topics, write_run
 
     ap = argparse.ArgumentParser()
     ap.add_argument("--topics", default="data/qrels/topics.tsv")
@@ -38,7 +38,12 @@ def main():
     args = ap.parse_args()
 
     topics = load_topics(args.topics)
-    run = {qid: search_semantic(text, args.k, args.index_dir, args.use_ivf) for qid, text in topics.items()}
+    # Patent-as-query: the query text IS a corpus document's own
+    # title+abstract, so over-fetch by 1 and drop the trivial self-match.
+    run = {
+        qid: exclude_self_match(search_semantic(text, args.k + 1, args.index_dir, args.use_ivf), qid, args.k)
+        for qid, text in topics.items()
+    }
     write_run(run, args.out, tag="semantic")
     print(f"Wrote {args.out}")
 

@@ -3,7 +3,7 @@ import argparse
 
 import numpy as np
 
-from src.eval.trec_format import load_topics, write_run
+from src.eval.trec_format import exclude_self_match, load_topics, write_run
 from src.index.bm25_index import load_index as load_bm25, tokenize
 from src.index.bm25f_index import DEFAULT_FIELD_WEIGHTS
 from src.index.bm25f_index import load_index as load_bm25f
@@ -39,9 +39,11 @@ def search_bm25f(query: str, k: int = 10, weights: dict | None = None,
 
 
 def run_over_topics(topics: dict[str, str], search_fn, k: int = 100) -> dict[str, list[tuple[str, float]]]:
+    """Patent-as-query evaluation: the query text IS a corpus document's own
+    title+abstract, so over-fetch by 1 and drop the trivial self-match."""
     run = {}
     for qid, text in topics.items():
-        run[qid] = search_fn(text, k)
+        run[qid] = exclude_self_match(search_fn(text, k + 1), qid, k)
     return run
 
 
