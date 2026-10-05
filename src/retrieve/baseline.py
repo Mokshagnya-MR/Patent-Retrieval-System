@@ -22,6 +22,13 @@ def search_bm25(query: str, k: int = 10, index_path: str = "data/processed/bm25_
     return [(doc_ids[i], float(scores[i])) for i in top_idx]
 
 
+def get_bm25_idf(index_path: str = "data/processed/bm25_index.pkl") -> dict[str, float]:
+    """Corpus IDF per token, from the (cached) BM25 index."""
+    if index_path not in _bm25_cache:
+        _bm25_cache[index_path] = load_bm25(index_path)
+    return _bm25_cache[index_path][0].idf
+
+
 def search_bm25f(query: str, k: int = 10, weights: dict | None = None,
                   index_path: str = "data/processed/bm25f_index.pkl"):
     if index_path not in _bm25f_cache:
