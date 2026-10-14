@@ -7,7 +7,7 @@ Scope decisions (see build-plan doc):
   - CPC classes: H01M (batteries/electrochemistry), G06N (AI/ML/computing)
   - Only GRANTED patents (decision == ACCEPTED, patent_number present) --
     citation ("References Cited") data is only meaningful for granted
-    patents, and Phase 2's qrels depend on it.
+    patents, and the citation-derived qrels depend on it.
   - Filing years 2012-2018: verified against the full metadata index that
     this range captures 16,471 of the 16,494 total H01M+G06N granted patents
     across the whole 2004-2018 dataset (99.9%) -- 2004-2011 contributes only

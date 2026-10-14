@@ -1,6 +1,6 @@
 """Hybrid fusion of BM25 (or BM25F) and semantic retrieval: RRF (no tuning)
 and weighted linear combination (alpha swept on a dev split, see
-Phase 5 ablation script run_alpha_sweep.py)."""
+src/retrieve/alpha_sweep.py)."""
 import argparse
 
 import numpy as np

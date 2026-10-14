@@ -1,7 +1,7 @@
 # AI-Powered Patent Retrieval & Similarity Search
 
 *Information Retrieval course project. BM25/vector retrieval, indexing, and
-evaluation are the graded core; the LLM/explanation layer (Phase 11) is a
+evaluation are the graded core; the LLM/explanation layer is a
 thin, clearly-labeled bonus on top and does not make or imply any
 patentability/novelty determination.*
 
@@ -275,7 +275,7 @@ on the test split because the full query set includes harder queries. The
 comparison that matters is within this table, where every method is scored
 on the same 206 queries.
 
-## 5. Query Reduction Ablation (Phase 6)
+## 5. Query Reduction Ablation
 
 Patent-as-query topics, `patent_full` (title+abstract+claims+background,
 uncut) vs reduced variants, scored with BM25 and hybrid on all 206 queries
@@ -328,7 +328,7 @@ found a different ordering and explained it with a "coherent text embeds
 better" theory. Neither that ordering nor the pre-fix claim-1 numbers
 survived; the table above is the corrected, current state.)*
 
-## 6. ANN Exact-vs-Approximate Tradeoff (Phase 4)
+## 6. ANN Exact-vs-Approximate Tradeoff
 
 Averaged over all 206 topics (`results/ann_tradeoff.csv`), IndexIVFFlat vs
 exact IndexFlatIP search:
@@ -344,7 +344,7 @@ tradeoff curve is the point: nearly all of exact search's result quality is
 recoverable at a fraction of the latency, which is the whole justification
 for ANN indexing at larger scales where exact search stops being an option.
 
-## 7. Result Diversification (Phase 10)
+## 7. Result Diversification
 
 Patent-family dedup (`src/retrieve/diversify.py`): TF-IDF cosine similarity
 over title+abstract, collapsing results above a 0.85 threshold into their
@@ -364,7 +364,7 @@ given the query's own travel-specific framing arguably belongs higher than
 some of what it replaced. Across all 206 topics, 45 queries had at least
 one family collapsed, confirming this isn't a one-off case.
 
-## 8. Qualitative Failure Analysis (Phase 9)
+## 8. Qualitative Failure Analysis
 
 Full annotated examples in `notebooks/error_analysis.ipynb` (10 examples,
 5 per direction, executed with cached outputs). Summary:
@@ -404,8 +404,8 @@ actually drove the citation.
 This is a **prior-art discovery tool**, not a patentability determination
 system. It surfaces topically/citation-related patents for a human reviewer;
 it does not assess novelty, non-obviousness, or any other legal
-patentability criterion, and the passage-highlighting/summary layer (Phase
-11) is explicitly grounded (extractive first, optional RAG-style generation
+patentability criterion, and the passage-highlighting/summary layer is
+explicitly grounded (extractive first, optional RAG-style generation
 constrained to the retrieved passage) and labeled as such in the UI.
 
 ## 10. Limitations and Future Work

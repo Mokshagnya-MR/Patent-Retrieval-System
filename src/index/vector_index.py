@@ -1,6 +1,6 @@
 """Embed the corpus and build FAISS indices: exact (IndexFlatIP) for
 correctness, and an approximate IndexIVFFlat for the recall-vs-latency
-comparison in Phase 4's DoD (see src/eval/ann_tradeoff.py).
+comparison (see src/index/ann_benchmark.py).
 
 Model default: BAAI/bge-small-en-v1.5 (384-dim, fast on CPU). Swap-in path
 for a larger model: change EMBEDDING_MODEL and re-run -- everything else

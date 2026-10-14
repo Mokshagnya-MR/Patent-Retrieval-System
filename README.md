@@ -33,7 +33,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-**BigQuery access** (needed for Phase 2, citation fetching): create a GCP
+**BigQuery access** (needed for citation fetching): create a GCP
 project, enable the BigQuery API, create a service account with the
 **BigQuery Job User** role, download its JSON key, then either set
 `GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json` or pass `--credentials`
@@ -45,45 +45,45 @@ are fetched via a query array parameter, not a scratch table.
 Run from the repo root, in order:
 
 ```bash
-# Phase 1 — build the corpus (downloads ~31GB from HuggingFace, checkpoints per year)
+# build the corpus (downloads ~31GB from HuggingFace, checkpoints per year)
 python -m src.ingest.filter_cpc
 
-# Phase 2 — citation-derived qrels
+# citation-derived qrels
 python -m src.preprocess.fetch_citations --project YOUR_GCP_PROJECT_ID
 python -m src.preprocess.build_qrels
 python -m src.eval.splits
 
-# Phase 3 — BM25 / BM25F baselines
+# BM25 / BM25F baselines
 python -m src.index.bm25_index
 python -m src.index.bm25f_index
 python -m src.retrieve.baseline
 
-# Phase 4 — semantic retrieval
+# semantic retrieval
 python -m src.index.vector_index
 python -m src.retrieve.semantic
 python -m src.index.ann_benchmark
 
-# Phase 5 — hybrid fusion
+# hybrid fusion
 python -m src.retrieve.hybrid
 python -m src.retrieve.alpha_sweep
 
-# Phase 6 — query reduction ablation
+# query reduction ablation
 python -m src.retrieve.query_reduction_ablation
 
-# Phase 7 — reranking
+# reranking
 python -m src.retrieve.rerank
 python -m src.retrieve.rerank_ltr   # stretch: LambdaMART
 
-# Phase 8 — evaluation
+# evaluation
 python -m src.eval.run_eval --run results/runs/<name>.run
 python -m src.eval.final_comparison      # test split, Wilcoxon + Holm-adjusted p-values
 python -m src.eval.temporal_filter       # effect of dropping later-filed (non-prior-art) results
 python -m src.eval.cross_validation      # 5-fold CV hybrid over all 206 queries (more statistical power)
 
-# Phase 10 — diversification
+# diversification
 python -m src.retrieve.diversify
 
-# Phase 12 — serve it (two terminals, both from the repo root)
+# serve it (two terminals, both from the repo root)
 uvicorn src.api.main:app
 streamlit run ui/streamlit_app.py
 ```
@@ -96,7 +96,7 @@ cutoff, near-duplicate grouping, highlighted claim passages, CSV export),
 Run Streamlit from the repo root so `.streamlit/config.toml`'s theme applies.
 
 Each script writes its output under `data/` or `results/` (both gitignored
-— see below) so later phases pick up right where the previous one left off.
+— see below) so later steps pick up right where the previous one left off.
 
 ## Tests
 
@@ -111,16 +111,16 @@ suite needs no built indices or model downloads.
 
 ```
 src/
-  ingest/      Phase 1  — HUPD download + CPC filtering
-  preprocess/  Phase 2  — text cleaning, citation fetch, qrels/topics
-  index/       Phase 3-4 — BM25, BM25F, FAISS vector indices
-  retrieve/    Phase 3-7,10 — search, fusion, query reduction, reranking, diversification
-  eval/        Phase 8  — metrics, significance tests, comparison tables
-  explain/     Phase 11 — extractive passage highlighting
-  api/         Phase 12 — FastAPI backend
-ui/            Phase 12 — Streamlit frontend
-notebooks/     Phase 9  — error analysis
-report/        Phase 13 — final write-up
+  ingest/      HUPD download + CPC filtering
+  preprocess/  text cleaning, citation fetch, qrels/topics
+  index/       BM25, BM25F, FAISS vector indices
+  retrieve/    search, fusion, query reduction, reranking, diversification
+  eval/        metrics, significance tests, comparison tables
+  explain/     extractive passage highlighting
+  api/         FastAPI backend
+ui/            Streamlit frontend
+notebooks/     error analysis
+report/        final write-up
 ```
 
 `data/` and `results/` are gitignored — they hold the built corpus (~1GB+),

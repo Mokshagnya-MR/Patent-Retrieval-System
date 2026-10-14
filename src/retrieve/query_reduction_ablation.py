@@ -1,4 +1,4 @@
-"""Phase 6 ablation: patent_full vs patent_reduced query construction,
+"""Query reduction ablation: patent_full vs patent_reduced query construction,
 scored with BM25 and hybrid retrieval, on the patent-as-query topics (every
 topic already IS a patent -- our qrels are citation-derived, so the query
 is naturally "this patent" rather than free text)."""

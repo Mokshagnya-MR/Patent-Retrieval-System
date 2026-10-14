@@ -1,5 +1,5 @@
 """Deterministic 70/30 dev/test split over topic (query) ids, persisted so
-every phase that needs it (alpha tuning, query-reduction ablation, LTR
+every step that needs it (alpha tuning, query-reduction ablation, LTR
 training) uses the exact same split. Tune only on dev; report only on test."""
 import argparse
 import os
