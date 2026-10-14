@@ -18,3 +18,4 @@ results/runs/*.run
 *.egg-info/
 .pytest_cache/
 .secrets/
+.claude/
