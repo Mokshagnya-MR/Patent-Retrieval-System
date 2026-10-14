@@ -23,7 +23,7 @@ def sweep(bm25_run, semantic_run, qrels, dev_ids, k=100, alphas=None):
         }
         per_query = evaluate_run(qrels, dev_run)
         avg = aggregate(per_query)
-        rows.append({"alpha": alpha, "ndcg_10": avg["ndcg_cut_10"], "map": avg.get("recip_rank", 0.0)})
+        rows.append({"alpha": alpha, "ndcg_10": avg["ndcg_cut_10"], "mrr": avg["recip_rank"]})
     return pd.DataFrame(rows)
 
 

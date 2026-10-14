@@ -13,7 +13,15 @@ def reciprocal_rank_fusion(*rankings: list[tuple[str, float]], k: int = 60) -> l
     for ranking in rankings:
         for rank, (doc_id, _score) in enumerate(ranking, start=1):
             scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)
-    return sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    return _sort_scores(scores)
+
+
+def _sort_scores(scores: dict[str, float]) -> list[tuple[str, float]]:
+    """Best-first, ties broken by doc_id. The explicit tie-break matters for
+    reproducibility: iterating a set of doc-id strings follows Python's
+    per-process hash randomization, so without it tied docs come out in a
+    different order on every run and the top-k cutoff isn't stable."""
+    return sorted(scores.items(), key=lambda x: (-x[1], x[0]))
 
 
 def _minmax_normalize(pairs: list[tuple[str, float]]) -> dict[str, float]:
@@ -37,7 +45,7 @@ def weighted_fusion(bm25_results: list[tuple[str, float]], semantic_results: lis
         doc_id: alpha * bm25_norm.get(doc_id, 0.0) + (1 - alpha) * sem_norm.get(doc_id, 0.0)
         for doc_id in all_docs
     }
-    return sorted(combined.items(), key=lambda x: x[1], reverse=True)
+    return _sort_scores(combined)
 
 
 def main():
