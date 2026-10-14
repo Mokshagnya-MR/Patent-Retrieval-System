@@ -76,15 +76,24 @@ python -m src.retrieve.rerank_ltr   # stretch: LambdaMART
 
 # Phase 8 — evaluation
 python -m src.eval.run_eval --run results/runs/<name>.run
-python -m src.eval.final_comparison
+python -m src.eval.final_comparison      # test split, Wilcoxon + Holm-adjusted p-values
+python -m src.eval.temporal_filter       # effect of dropping later-filed (non-prior-art) results
+python -m src.eval.cross_validation      # 5-fold CV hybrid over all 206 queries (more statistical power)
 
 # Phase 10 — diversification
 python -m src.retrieve.diversify
 
-# Phase 12 — serve it
-uvicorn src.api.main:app --reload
+# Phase 12 — serve it (two terminals, both from the repo root)
+uvicorn src.api.main:app
 streamlit run ui/streamlit_app.py
 ```
+
+The API loads the corpus, indices and embedding model at startup (~10 s), so
+the first search is fast. The UI (http://localhost:8501) has three tabs:
+**Search** (free-text or patent-number queries, optional prior-art date
+cutoff, near-duplicate grouping, highlighted claim passages, CSV export),
+**Evaluation** (charts and tables read from `results/`), and **How it works**.
+Run Streamlit from the repo root so `.streamlit/config.toml`'s theme applies.
 
 Each script writes its output under `data/` or `results/` (both gitignored
 — see below) so later phases pick up right where the previous one left off.
@@ -92,8 +101,11 @@ Each script writes its output under `data/` or `results/` (both gitignored
 ## Tests
 
 ```bash
-pytest tests/ -v
+python -m pytest tests/ -v
 ```
+
+`tests/test_api.py` runs the API against a stubbed four-patent corpus, so the
+suite needs no built indices or model downloads.
 
 ## Repo layout
 
