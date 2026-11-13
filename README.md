@@ -1,5 +1,11 @@
 # Patent Retrieval System
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mokshagnya-MR/Patent-Retrieval-System/blob/master/notebooks/colab_demo.ipynb)
+
+**Run it in Colab:** the notebook above rebuilds every index from the committed
+corpus (`data/corpus/`), reproduces the evaluation tables, and ends with a
+live search demo. Use Runtime → Run all; a GPU runtime makes it faster.
+
 AI-powered prior-art search over USPTO patents — an Information Retrieval
 course project. BM25/BM25F, semantic (embedding + FAISS) retrieval, hybrid
 fusion, learning-to-rank reranking, and citation-derived evaluation are the
@@ -119,7 +125,7 @@ src/
   explain/     extractive passage highlighting
   api/         FastAPI backend
 ui/            Streamlit frontend
-notebooks/     error analysis
+notebooks/     error analysis, Colab end-to-end demo
 report/        final write-up
 ```
 
