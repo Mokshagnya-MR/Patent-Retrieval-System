@@ -19,3 +19,7 @@ results/runs/*.run
 .pytest_cache/
 .secrets/
 .claude/
+
+# Compressed corpus + citations, committed so the Colab notebook can run without the 31GB HUPD download
+!data/corpus/
+!data/corpus/*.parquet
